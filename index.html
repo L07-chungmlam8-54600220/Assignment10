@@ -1,39 +1,69 @@
- <html>
- <head>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.sound.js"></script>
-   <script>
-    
-    // an example using sound (which is not required for this assignment)
+<html>
 
-    var sound;
-    
-    function preload() 
-    {
-      sound = loadSound('pop.mp3');
-    }
-    
-    function setup() 
-    {
-       createCanvas(800, 600);
-       textAlign(CENTER);
-       fill(100);
-       noStroke();
-       text("Click to play sound", width/2, height/2);
-    }
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.sound.js"></script>
+    <script>
+        var x = [],
+            y = [],
+            letter = [],
+            sz = [],
+            sound, amplitude;
 
-    function draw() 
-    {
-     
-    }
-    
-    function mouseClicked() 
-    { 
-       sound.play();
-       background(random(255), random(255), random(255));
-    }
 
-   </script>
- </head>
- </html>
+        function preload() {
+            sound = loadSound("pop.mp3");
+        }
 
+        function setup() {
+            createCanvas(400, 400);
+            for (var i = 0; i < 50; i++) {
+                x[i] = random(width);
+                y[i] = random(height);
+                sz[i] = random(1, 20);
+
+            }
+        }
+
+        function draw() {
+
+            background(0);
+            for (var i = 0; i < 50; i++) {
+                x[i] += random(-5, 5);
+                y[i] += random(-5, 5);
+
+
+                noStroke();
+                ellipse(x[i], y[i], sz[i], sz[i])
+
+                fill(255);
+                stroke(x[i], y[i], 200, 170);
+                line(x[i], y[i], x[i + 1], y[i + 1]);
+                if (mouseIsPressed == true) {
+                    x[i] = width / 2;
+                    y[i] = width / 2;
+                    sound.rate(noise(sz[i])/2);
+                    sound.play();
+                }
+
+                if (x[i] > width || x[i] < 0) {
+                    x[i] = width / 2;
+                    sound.rate(noise(sz[i] * 10));
+                    sound.play();
+                }
+
+                if (y[i] > height || y[i] < 0) {
+                    y[i] = height / 2;
+                    sound.rate(noise(sz[i] / 100));
+                    sound.play();
+                }
+            }
+            stroke(255);
+        }
+    </script>
+</head>
+<div>
+    if the ball is touch the edge of canvas, it will go to the center of canvas,
+    <br>if mouse is pressed, all balls will start dancing from the center of canvas.</div>
+
+</html>
